@@ -32,7 +32,12 @@ require __DIR__ . '/includes/utils/functions.php';
 
 
 if (isset($_GET['length'])) {
-    $password = generate_password($_GET['length']);
+    $result = generate_password($_GET['length']);
+
+    // Se la password è stata settata, mando alla pagina success.php
+    if ($result === true) header('Location: success.php');
+    //! errore
+    $error = $result;
 }
 
 
@@ -69,10 +74,10 @@ if (isset($_GET['length'])) {
                 </div>
 
                 <!--Alert qui -->
-                <?php if (isset($password)) : ?>
+                <?php if (isset($error)) : ?>
                     <div class="col-7">
-                        <div class="alert alert-info">
-                            La tua password è: <strong><?= $password ?></strong>
+                        <div class="alert alert-danger">
+                            La tua password è: <strong><?= $error ?></strong>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -84,7 +89,7 @@ if (isset($_GET['length'])) {
                         <div class="row mb-3">
                             <label for="length" class="col-sm-7 col-form-label">Lunghezza password:</label>
                             <div class="col-sm-3">
-                                <input type="number" name="length" id="length" class="form-control" min="5" value="<?= $_GET['length'] ?? 8 ?>" step="1">
+                                <input type="number" name="length" id="length" class="form-control" <?php if (isset($error)) echo 'is-invalid' ?> value="<?= $_GET['length'] ?? 8 ?>" step="1">
                             </div>
                         </div>
 

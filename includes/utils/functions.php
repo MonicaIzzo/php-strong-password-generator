@@ -17,6 +17,16 @@ function generate_password($length)
     // Calcolo il totale dei caratteri disponibili
     $total_characters = mb_strlen($characters);
 
+
+    // Setto il minimo dei caratteri
+    $min_length = 8;
+
+
+    //! VALIDAZIONE
+    if (empty($length)) return 'Non è stata inserita alcuna lunghezza per la password';
+    elseif ($length < 0 || !is_numeric($length)) return 'Il valore inserito non è valido';
+    elseif ($length < $min_length) return "La password deve essere lunga almeno $min_length caratteri";
+
     // Generiamo la password con caratteri casuali
     while (mb_strlen($password) < $length) {
         // Prendo un index a caso
@@ -28,6 +38,11 @@ function generate_password($length)
         // Lo metto nella password
         $password .= $random_character;
     }
+
+    // Metto la password in sessione
+    session_start();
+    $_SESSION['password'] = $password;
+
     // Restituisco la password
-    return $password;
+    return true;
 }
