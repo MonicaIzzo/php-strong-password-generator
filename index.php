@@ -27,37 +27,9 @@ Milestone 6 (BONUS): Aggiungere la validazione
 -->
 
 <?php
-function generate_password($length)
-{
+require __DIR__ . '/includes/utils/functions.php';
 
-    // Preparo la mia password
-    $password = '';
 
-    // Elenco dei possibili caratteri
-    $letters = 'abcdefghijklmnopqrstuwxyvz';
-    $numbers = '0123456789';
-    $symbols = '!?&%$<>^+-*/()]{}@#_=';
-
-    // Combino insieme per creare tutti i caratteri disponibili
-    $characters = $letters . $numbers . $symbols . strtoupper($letters);
-
-    // Calcolo il totale dei caratteri disponibili
-    $total_characters = mb_strlen($characters);
-
-    // Generiamo la password con caratteri casuali
-    while (mb_strlen($password) < $length) {
-        // Prendo un index a caso
-        $random_index = rand(0, $total_characters - 1);
-
-        // Prendo un carattere a caso
-        $random_character = $characters[$random_index];
-
-        // Lo metto nella password
-        $password .= $random_character;
-    }
-    // Restituisco la password
-    return $password;
-}
 
 if (isset($_GET['length'])) {
     $password = generate_password($_GET['length']);
@@ -112,7 +84,7 @@ if (isset($_GET['length'])) {
                         <div class="row mb-3">
                             <label for="length" class="col-sm-7 col-form-label">Lunghezza password:</label>
                             <div class="col-sm-3">
-                                <input type="number" name="length" id="length" class="form-control" min="5" value="5" step="1">
+                                <input type="number" name="length" id="length" class="form-control" min="5" value="<?= $_GET['length'] ?? 8 ?>" step="1">
                             </div>
                         </div>
 
