@@ -1,6 +1,6 @@
 <?php
 
-function generate_password($length)
+function generate_password($length, $duplicates_allowed)
 {
 
     // Preparo la mia password
@@ -26,6 +26,7 @@ function generate_password($length)
     if (empty($length)) return 'Non è stata inserita alcuna lunghezza per la password';
     elseif ($length < 0 || !is_numeric($length)) return 'Il valore inserito non è valido';
     elseif ($length < $min_length) return "La password deve essere lunga almeno $min_length caratteri";
+    elseif (!$duplicates_allowed && $length > $total_characters) return "La lunghezza massima dei caratteri non deve essere superiore a $total_characters";
 
     // Generiamo la password con caratteri casuali
     while (mb_strlen($password) < $length) {
@@ -35,8 +36,10 @@ function generate_password($length)
         // Prendo un carattere a caso
         $random_character = $characters[$random_index];
 
-        // Lo metto nella password
-        $password .= $random_character;
+        // Lo metto nella password (se sono ammessi duplicati)
+        if ($duplicates_allowed || !str_contains($password, $random_character)) {
+            $password .= $random_character;
+        }
     }
 
     // Metto la password in sessione

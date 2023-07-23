@@ -32,7 +32,11 @@ require __DIR__ . '/includes/utils/functions.php';
 
 
 if (isset($_GET['length'])) {
-    $result = generate_password($_GET['length']);
+    // Controllo se posso utilizzare i duplicati
+    $duplicates_allowed = $_GET['duplicates'] ? true : false;
+
+
+    $result = generate_password($_GET['length'], $duplicates_allowed);
 
     // Se la password è stata settata, mando alla pagina success.php
     if ($result === true) header('Location: success.php');
@@ -94,6 +98,19 @@ if (isset($_GET['length'])) {
                         </div>
 
                         <!--Ripetizioni Caratteri -->
+                        <fildset class="row mn-3">
+                            <legend class="col-form-label col-sm-7 pt-0">Consenti ripetizioni di uno o più carateri:</legend>
+                            <div class="col-sm-5">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="duplicates" id="allow-duplicates" checked value="1">
+                                    <label class="form-check-label" for="allow-duplicates">SI</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="duplicates" id="prevent-duplicates" value="0">
+                                    <label class="form-check-label" for="prevent-duolicates">NO</label>
+                                </div>
+                            </div>
+                        </fildset>
 
                         <!--Tipologia Caratteri ammessi -->
 
