@@ -35,8 +35,12 @@ if (isset($_GET['length'])) {
     // Controllo se posso utilizzare i duplicati
     $duplicates_allowed = $_GET['duplicates'] ? true : false;
 
+    // Controllo i caratteri che puoi usare
+    $allowed_characters = $_GET['characters'] ?? [];
 
-    $result = generate_password($_GET['length'], $duplicates_allowed);
+
+    // Genero la password
+    $result = generate_password($_GET['length'], $duplicates_allowed, $allowed_characters);
 
     // Se la password è stata settata, mando alla pagina success.php
     if ($result === true) header('Location: success.php');
@@ -113,13 +117,28 @@ if (isset($_GET['length'])) {
                         </fildset>
 
                         <!--Tipologia Caratteri ammessi -->
+                        <div class="row mb-3 mt-5">
+                            <div class="col-sm-5 offset-sm-7">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="characters[]" id="letters" checked value="L">
+                                    <label class="form-check-label" for="letters">Lettere</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="characters[]" id="numbers" checked value="N">
+                                    <label class="form-check-label" for="numbers">Numeri</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="characters[]" id="symbols" checked value="S">
+                                    <label class="form-check-label" for="symbols">Simboli</label>
+                                </div>
+                            </div>
 
-                        <!--Bottoni -->
+                            <!--Bottoni -->
 
-                        <div class="mb-3 d-flex justify-content-end">
-                            <button tyoe="submit" class="btn btn-primary me-3">Invia</button>
-                            <button tyoe="reset" class="btn btn-secondary">Annulla</button>
-                        </div>
+                            <div class="mb-3 d-flex justify-content-end">
+                                <button tyoe="submit" class="btn btn-primary me-3">Invia</button>
+                                <button tyoe="reset" class="btn btn-secondary">Annulla</button>
+                            </div>
                     </form>
                 </div>
             </div>

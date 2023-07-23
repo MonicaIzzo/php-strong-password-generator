@@ -1,6 +1,6 @@
 <?php
 
-function generate_password($length, $duplicates_allowed)
+function generate_password($length, $duplicates_allowed, $allowed_characters)
 {
 
     // Preparo la mia password
@@ -12,7 +12,10 @@ function generate_password($length, $duplicates_allowed)
     $symbols = '!?&%$<>^+-*/()]{}@#_=';
 
     // Combino insieme per creare tutti i caratteri disponibili
-    $characters = $letters . $numbers . $symbols . strtoupper($letters);
+    $characters = '';
+    if (in_array('L', $allowed_characters)) $characters .= $letters . strtoupper($letters);
+    if (in_array('N', $allowed_characters)) $characters .= $numbers;
+    if (in_array('S', $allowed_characters)) $characters .= $symbols;
 
     // Calcolo il totale dei caratteri disponibili
     $total_characters = mb_strlen($characters);
@@ -23,6 +26,7 @@ function generate_password($length, $duplicates_allowed)
 
 
     //! VALIDAZIONE
+    if (empty($allowed_characters)) return 'Almeno un set di caratteri deve essere ammesso';
     if (empty($length)) return 'Non è stata inserita alcuna lunghezza per la password';
     elseif ($length < 0 || !is_numeric($length)) return 'Il valore inserito non è valido';
     elseif ($length < $min_length) return "La password deve essere lunga almeno $min_length caratteri";
